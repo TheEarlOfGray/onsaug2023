@@ -9,7 +9,7 @@ def home():
 @app.route('/postoption', methods=["GET", "POST"])
 def posto():
     response = request.method
-    return f"Method is {response}"#
+    return f"Method is {response}"
 
 @app.route('/name/<name>/<int:num>')
 def name(name, num):
