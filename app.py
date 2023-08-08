@@ -1,12 +1,31 @@
 from flask import Flask, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
 
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URI")
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data.sqlite"
+
+db = SQLAlchemy(app)
+
+class Owner(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(30), default="John")
+    last_name = db.Column(db.String(30), unique=True)
+    cars = db.relationship('Car', backref='ownerbr')
+
+class Car(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    num_plate = db.Column(db.String, nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'), nullable=False)
+
+
 @app.route('/')
 def home():
-    return "<h1>This is a title</h1>"
+    return f"<h1>This is a title</h1>"
 
-@app.route('/postoption', methods=["GET", "POST"])
+@app.route('/postoption', methods=["GET", "POST"]) 
 def posto():
     response = request.method
     return f"Method is {response}"
