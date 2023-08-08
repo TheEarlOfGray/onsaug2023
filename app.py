@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for, render_template
 from flask_sqlalchemy import SQLAlchemy
 import os
 
@@ -23,7 +23,10 @@ class Car(db.Model):
 
 @app.route('/')
 def home():
-    return f"<h1>This is a title</h1>"
+    obj1 = Owner.query.filter_by(id=1).first()
+    name = obj1.first_name + " " + obj1.last_name
+    names = Car.query.all()
+    return render_template('index.html', name=name, names=names)
 
 @app.route('/postoption', methods=["GET", "POST"]) 
 def posto():

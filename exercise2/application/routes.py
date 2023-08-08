@@ -1,5 +1,6 @@
 from application import app, db
 from application.models import Games
+from flask import render_template
 
 @app.route('/add')
 def add():

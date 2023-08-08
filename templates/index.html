@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>This is the actual page</p>
+{% if name %}
+<p>Hello {{ name }}</p>
+{% else %}
+<p>Sorry, didn't catch that, try again.</p>
+{% endif %}
+
+{% for name in names %}
+<p>{{ name.id }}: {{ name.num_plate }}</p>
+{% endfor %}
+
+
+{% endblock content %}
