@@ -1,11 +1,14 @@
 from flask import Flask, request, redirect, url_for, render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
+from wtforms import SelectField, StringField, IntegerField, SubmitField
 import os
 
 app = Flask(__name__)
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URI")
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data.sqlite"
+app.config['SECRET_KEY'] = "SECRET_KEY"
 
 db = SQLAlchemy(app)
 
@@ -20,6 +23,39 @@ class Car(db.Model):
     num_plate = db.Column(db.String, nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'), nullable=False)
 
+class Dog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    age = db.Column(db.Integer)
+    breed = db.Column(db.String)
+
+
+class DogForm(FlaskForm):
+    name = StringField("Name: ")
+    age = IntegerField("Age: ")
+    breed = SelectField("Breed: ", choices=[
+        ("collie", "Collie"),
+        ("retriever", "Retriever"),
+        ("pug", "Pug")
+    ])
+    submit = SubmitField("Submit")
+
+@app.route('/add-dog', methods=['GET', 'POST'])
+def add_dog():
+    form = DogForm()
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            dog = Dog(
+                name = form.name.data,
+                age = form.age.data,
+                breed = form.breed.data
+            )
+            db.session.add(dog)
+            db.session.commit()
+            return redirect(url_for('home'))
+
+    return render_template('add_dog.html', form=form)
 
 @app.route('/')
 def home():
