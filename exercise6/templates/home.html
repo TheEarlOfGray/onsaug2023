@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>Add person</title>
+  </head>
+  <body>
+    <h1>Add Person</h1>
+    <form method="POST" action="/">
+        {{ form.hidden_tag() }}
+        {{ form.name.label }} {{ form.name }}
+        {{ form.submit }}
+    </form>
+    <h2>Register</h2>
+    <table>
+      {% for person in registrees %}
+        <tr>
+          <td>
+            {{ person.name }} 
+          </td>
+        </tr>
+        {% endfor %}
+    </table>
+  </body>
+</html>
