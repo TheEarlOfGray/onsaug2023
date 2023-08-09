@@ -29,8 +29,6 @@ class CharCheck:
             if item in field.data.lower():
                 raise ValidationError(self.message)
 
-
-
 class myForm(FlaskForm):
     username = StringField('Username', validators=[
         DataRequired(),
