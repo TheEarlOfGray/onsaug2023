@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Add person</title>
+  </head>
+  <body>
+    <h1>Register</h1>
+    <form method="POST" action="/">
+      <input type="text" name="name">
+      <input type="password" name="password">
+      <input type="submit" value="register">
+    </form>
+
+    <h2>Registrees</h2>
+    <table>
+      {% for person in registrees %}
+        <tr>
+          <td>
+            {{ person.name }} 
+          </td>
+          <td>
+            {{ person.password }}
+          </td>
+        </tr>
+        {% endfor %}
+    </table>
+  </body>

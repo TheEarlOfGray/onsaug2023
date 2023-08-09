@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField, IntegerField, SubmitField
 from flask_testing import TestCase
+from flask_bcrypt import Bcrypt
 import os
 
 app = Flask(__name__)
@@ -12,6 +13,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data.sqlite"
 app.config['SECRET_KEY'] = "SECRET_KEY"
 
 db = SQLAlchemy(app)
+
+bcrypt = Bcrypt(app)
 
 class Owner(db.Model):
     id = db.Column(db.Integer, primary_key=True)

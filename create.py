@@ -1,4 +1,4 @@
-from app import db, app, Owner, Car
+from app import db, app, Owner, Car, bcrypt
 
 
 with app.app_context():
@@ -23,7 +23,7 @@ with app.app_context():
     print(testuser.cars[1].num_plate)
 
     testitem = Car.query.filter_by(owner_id=1).order_by(Car.id.desc()).all()
-    print(testitem)
+    # print(testitem)
 
     car_to_change = Car.query.filter_by(id=1).first()
     car_to_change.num_plate = "new number plate"
@@ -32,3 +32,6 @@ with app.app_context():
     car_to_delete = Car.query.filter_by(id=2).first()
     db.session.delete(car_to_delete)
     db.session.commit()
+
+    var1 = bcrypt.generate_password_hash('bf6 h8w')
+    print(bcrypt.check_password_hash(b'$2b$12$UEokINQX20q3GrrzSa4OJOb/Mc4wqv2rvX4.b/.t2fbQ6aCF7ldRi', 'bf6 h8w'))

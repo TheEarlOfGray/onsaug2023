@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>Add person</title>
+  </head>
+  <body>
+    <h1>Register</h1>
+    <form method="POST" action="/login">
+      <input type="text" name="name">
+      <input type="password" name="password">
+      <input type="submit" value="Login">
+    </form>
+    <br>
+    {% if var1 %}
+    <h1>You are logged in!</h1>
+    {% endif %}
+    <h2>Registrees</h2>
+    <table>
+      {% for person in registrees %}
+        <tr>
+          <td>
+            {{ person.name }} 
+          </td>
+          <td>
+            {{ person.password }}
+          </td>
+        </tr>
+        {% endfor %}
+    </table>
+  </body>
