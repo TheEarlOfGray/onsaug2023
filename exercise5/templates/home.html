@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>Simple form validator</title>
+    </head>
+    <body>
+        <h1>Choose a username!</h1>
+        <div class='form'>
+            <form method='POST' action=''>
+                <!--The hidden tag here is necessary for CSRF protection (always include in forms)-->
+                {{ form.hidden_tag() }}
+                <!--We display the username field label and the field itself-->
+                {{ form.username.label }}
+                {{ form.username }}
+                <!--Here, we want our page to catch and display any errors raised. The if statement checks if a ValidationError object exists and if so, present the message-->
+                {% if form.username.errors %}
+                <div class='error'>
+                    {% for error in form.username.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <br>
+                {{ form.submit }}
+            </form>
+        </div>
+        <div>
+            <p> You chose: {{ username }} </p>
+        </div>
+    <body>
+</html>
