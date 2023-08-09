@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, url_for, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField, IntegerField, SubmitField
+from flask_testing import TestCase
 import os
 
 app = Flask(__name__)
@@ -29,6 +30,36 @@ class Dog(db.Model):
     age = db.Column(db.Integer)
     breed = db.Column(db.String)
 
+class TestBase(TestCase):
+    def create_app(self):
+        app.config.update(
+            SQLALCHEMY_DATABASE_URI='sqlite:///testdata.sqlite',
+            DEBUG=True,
+            WTF_CSRF_ENABLED=False
+        )
+        return app
+
+    def setUp(self):
+        db.create_all()
+
+        test_dog = Dog(name='Missy', age=15, breed='pug')
+        db.session.add(test_dog)
+        db.session.commit()
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+
+class TestViews(TestBase):
+    def test_home_get(self):
+        response = self.client.get(url_for('home'))
+        self.assertIn('This is the actual page', response.data.decode())
+
+class TestCrud(TestBase):
+    def test_dog_form_post(self):
+        response = self.client.post(url_for('add_dog'), data = dict(name="Fido", age=7, breed="collie"))
+        obj1 = Dog.query.filter_by(name='Fido').first()
+        self.assertEqual(obj1.name, 'Fido')
 
 class DogForm(FlaskForm):
     name = StringField("Name: ")
@@ -59,10 +90,10 @@ def add_dog():
 
 @app.route('/')
 def home():
-    obj1 = Owner.query.filter_by(id=1).first()
-    name = obj1.first_name + " " + obj1.last_name
-    names = Car.query.all()
-    return render_template('index.html', name=name, names=names)
+    # obj1 = Owner.query.filter_by(id=1).first()
+    # name = obj1.first_name + " " + obj1.last_name
+    # names = Car.query.all()
+    return render_template('index.html')
 
 @app.route('/postoption', methods=["GET", "POST"]) 
 def posto():
