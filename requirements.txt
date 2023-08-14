@@ -1,0 +1,5 @@
+flask
+flask-sqlalchemy
+flask-wtf
+flash-testing
+flash-bcrypt
