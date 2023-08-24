@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         SECRET_KEY=credentials('SECRET_KEY')
+        DOCKER_LOGIN=credentials('DOCKER_LOGIN')
     }
     stages {
         stage('Build') {
@@ -9,6 +10,7 @@ pipeline {
                 sh "sudo apt install -y python3-pip"
                 sh "export SECRET_KEY=${SECRET_KEY}"
                 sh "env"
+                sh "docker login -u ${DOCKER_LOGIN_USR} -p ${DOCKER_LOGIN_PSW}"
             }
         }
         stage('Dependencies') {
